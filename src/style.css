@@ -1,0 +1,856 @@
+:root {
+  color-scheme: light;
+  /* 다크모드 미지원 — 시스템 설정과 무관하게 항상 라이트 테마 */
+
+  --bg: #faf8f5;
+  --text: #2b2926;
+  --muted: #8a8379;
+  --accent: #a3785f;
+  --error: #b3543f;
+  --border: #e3ddd3;
+  --border-soft: #f2eee8;
+
+  --font: "Dongle", -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR',
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 150%;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.site-header {
+  flex: 0 0 auto;
+  border-bottom: 1px solid var(--border);
+  padding-block: clamp(0.35rem, 1.2vh, 1.65rem);
+  padding-inline: max(1.5rem, env(safe-area-inset-left)) max(1.5rem, env(safe-area-inset-right));
+}
+
+.site-header-inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #333333;
+}
+
+.site-footer {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--border);
+  padding-block: clamp(0.35rem, 1.2vh, 1.65rem);
+  padding-inline: max(1.5rem, env(safe-area-inset-left)) max(1.5rem, env(safe-area-inset-right));
+}
+
+.site-footer-inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  text-align: center;
+}
+
+.stage {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-areas: 'stack';
+  place-items: safe center;
+  overflow-y: auto;
+  padding: max(clamp(0.5rem, 1.5vh, 1.5rem), env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-right)) max(clamp(0.5rem, 1.5vh, 1.5rem), env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-left));
+}
+
+.panel {
+  grid-area: stack;
+  width: 100%;
+  max-width: 26rem;
+  opacity: 1;
+  transition: opacity 500ms ease;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+/* 전환 중(사라지는 쪽)에는 hidden을 바로 주지 않고 이 클래스로 먼저 투명하게 만든다 */
+.panel.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 나타나는 쪽은 hidden을 뗀 직후 이 클래스로 투명하게 시작해 opacity:1로 트랜지션한다 */
+.panel.is-entering {
+  opacity: 0;
+}
+
+.panel.hero {
+  max-width: 68rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  align-items: stretch;
+  gap: 7.5rem;
+  text-align: left;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(0.75rem, 3vh, 3rem);
+}
+
+.hero-headline {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: #333333;
+}
+
+.hero-sub {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--muted);
+}
+
+.hero-photo {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.hero-photo-btn {
+  width: 5em;
+  height: 5em;
+  margin: 0 0.6em;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px dashed var(--border);
+  background: #fff;
+  cursor: pointer;
+  transition: transform 200ms ease, border-color 200ms ease;
+}
+
+.hero-photo-btn:hover,
+.hero-photo-btn:focus-visible {
+  transform: scale(1.08);
+  border-color: var(--accent);
+}
+
+.hero-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.hero-photo-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.5rem);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--text);
+  border-radius: 0.4rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.hero-photo-btn:hover ~ .hero-photo-tooltip,
+.hero-photo-btn:focus-visible ~ .hero-photo-tooltip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.hero-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.testimonial-rail {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: #fff;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent);
+}
+
+.testimonial-track {
+  /* top/left만 고정하고(inset:0 아님) 스크롤 방향 크기는 auto로 둬서
+     콘텐츠 실제 크기 기준으로 -50% 이동이 정확히 절반(=카드 8개)만큼 움직이게 한다.
+     절대 위치라 카드가 넘쳐도 rail/페이지 크기에는 영향을 주지 않는다 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 1rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: marquee-y 40s linear infinite;
+}
+
+@keyframes marquee-y {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.testimonial-card {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 0.75rem;
+}
+
+.testimonial-avatar {
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  background: var(--border-soft);
+  color: var(--text);
+}
+
+.testimonial-avatar svg {
+  width: 100%;
+  height: 100%;
+}
+
+.testimonial-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.testimonial-quote {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.testimonial-meta {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.testimonial-rating {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+@media (max-width: 48rem) {
+  .panel.hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.1rem, 3vh, 3rem);
+  }
+
+  .hero-photo-btn {
+    width: min(5em, 2.1rem);
+    height: min(5em, 2.1rem);
+  }
+
+  .hero-headline {
+    font-size: clamp(1.4rem, 7vw, 2.2rem);
+  }
+
+  .testimonial-rail {
+    height: clamp(14rem, 34dvh, 20rem);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent);
+  }
+
+  .testimonial-track {
+    flex-direction: row;
+    width: auto;
+    height: 100%;
+    animation-name: marquee-x;
+  }
+
+  .testimonial-card {
+    flex-direction: column;
+    gap: 0.85rem;
+    width: 16rem;
+    padding: 0.85rem;
+  }
+
+  .testimonial-avatar {
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0.45rem;
+  }
+
+  .testimonial-body {
+    gap: 0.6rem;
+  }
+
+  .testimonial-quote {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* 세로로 짧은 화면(구형 폰 가로모드, 낮은 창 높이 등)에서 hero 콘텐츠를 한 번 더 압축 */
+@media (max-height: 700px) {
+  .hero-content {
+    gap: clamp(0.5rem, 2vh, 1rem);
+  }
+}
+
+@media (max-width: 48rem) and (max-height: 700px) {
+  .panel.hero {
+    gap: clamp(0.5rem, 2vh, 1rem);
+  }
+}
+
+.cta {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--accent);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: opacity 200ms ease, border-radius 350ms ease;
+}
+
+.cta.is-active {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.cta:hover {
+  opacity: 0.9;
+}
+
+.cta-arrow {
+  display: inline-block;
+  transition: transform 200ms ease;
+}
+
+.cta:hover .cta-arrow,
+.cta:focus-visible .cta-arrow {
+  transform: translateX(3px);
+}
+
+.hero-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.gate-row-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+
+.gate {
+  display: flex;
+  min-width: 0;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-width 450ms ease, opacity 300ms ease;
+}
+
+.gate.is-open {
+  max-width: 20rem;
+  opacity: 1;
+}
+
+.gate-row {
+  display: flex;
+}
+
+.gate input {
+  min-width: 11rem;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text);
+  text-align: center;
+  background: #fff;
+  border: 1px solid var(--border-soft);
+  border-left: none;
+  border-radius: 0;
+}
+
+.gate input:focus {
+  outline: none;
+}
+
+.gate button {
+  padding: 0.85rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--accent);
+  border: 1px solid var(--border-soft);
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 999px;
+  border-bottom-right-radius: 999px;
+  cursor: pointer;
+  transition: opacity 200ms ease;
+}
+
+.gate button:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 48rem) {
+  .hero-action {
+    width: 100%;
+  }
+
+  .gate-row-wrap {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .cta {
+    flex: 0 0 auto;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.8rem;
+    gap: 0.3rem;
+  }
+
+  .gate.is-open {
+    flex: 1;
+    max-width: 100%;
+  }
+
+  .gate-row {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .gate input {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    padding: 0.5rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .gate button {
+    flex: 0 0 auto;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+}
+
+.error {
+  align-self: stretch;
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  color: var(--error);
+  visibility: hidden;
+}
+
+.error.is-visible {
+  visibility: visible;
+}
+
+.letter {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.letter-back {
+  align-self: flex-start;
+  padding: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.letter-back:hover {
+  color: var(--accent);
+}
+
+.letter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.letter-font-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: -0.15rem;
+}
+
+.letter-font-btn {
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+.letter-font-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.letter-font-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.letter-content {
+  --letter-scale: 1;
+  line-height: 1.9;
+  font-size: clamp(calc(1rem * var(--letter-scale)), 4vw, calc(1.15rem * var(--letter-scale)));
+  letter-spacing: 0.01em;
+}
+
+.letter-content > *:first-child {
+  margin-top: 0;
+}
+
+.letter-content > *:last-child {
+  margin-bottom: 0;
+}
+
+.letter-content h1,
+.letter-content h2,
+.letter-content h3 {
+  margin: 2rem 0 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.letter-content h1 {
+  font-size: clamp(calc(1.4rem * var(--letter-scale)), 5vw, calc(1.8rem * var(--letter-scale)));
+}
+
+.letter-content h2 {
+  font-size: clamp(calc(1.25rem * var(--letter-scale)), 4.5vw, calc(1.5rem * var(--letter-scale)));
+}
+
+.letter-content h3 {
+  font-size: clamp(calc(1.1rem * var(--letter-scale)), 4vw, calc(1.25rem * var(--letter-scale)));
+}
+
+.letter-content p {
+  margin: 0 0 1.25rem;
+}
+
+.letter-content strong {
+  font-weight: 700;
+}
+
+.letter-content em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.letter-content ul,
+.letter-content ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.letter-content li {
+  margin: 0.4rem 0;
+}
+
+.letter-content blockquote {
+  margin: 0 0 1.25rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  font-style: italic;
+}
+
+.letter-content hr {
+  margin: 2rem 0;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+.letter-content a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.letter-actions {
+  align-self: center;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.letter-icon-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  background: none;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease;
+}
+
+.letter-icon-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.id-card-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(43, 41, 38, 0.55);
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.id-card-overlay[hidden] {
+  display: none;
+}
+
+.id-card-overlay.is-open {
+  opacity: 1;
+}
+
+.id-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 24rem;
+  padding: 3rem 2.5rem 2.5rem;
+  background: #fff;
+  border: 1px solid var(--border-soft);
+  border-radius: 1.5rem;
+  box-shadow: 0 1.5rem 3rem rgba(43, 41, 38, 0.2);
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.id-card-overlay.is-open .id-card {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.id-card-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.id-card-close:hover {
+  color: var(--text);
+  background: var(--border-soft);
+}
+
+.id-card-img {
+  width: 13rem;
+  height: 13rem;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--border-soft);
+}
+
+.id-card-name {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+}
+
+.id-card-role {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.copy-toast-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(43, 41, 38, 0.55);
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.copy-toast-overlay[hidden] {
+  display: none;
+}
+
+.copy-toast-overlay.is-open {
+  opacity: 1;
+}
+
+.copy-toast {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 2rem;
+  background: #fff;
+  border: 1px solid var(--border-soft);
+  border-radius: 1rem;
+  box-shadow: 0 1.5rem 3rem rgba(43, 41, 38, 0.2);
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.copy-toast-overlay.is-open .copy-toast {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.copy-toast-text {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .panel,
+  .gate,
+  .hero-photo-btn,
+  .hero-photo-tooltip,
+  .id-card-overlay,
+  .id-card,
+  .copy-toast-overlay,
+  .copy-toast {
+    transition: none;
+  }
+}

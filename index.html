@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>편지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">비밀 편지</div>
+  </header>
+  <main class="stage">
+    <section id="hero" class="panel hero">
+      <div class="hero-content">
+        <h1 class="hero-headline">
+          <span class="hero-line">멋지고 개쩌는, 사랑하는 후배</span>
+          <span class="hero-line">(<span class="hero-photo">
+              <button type="button" id="hero-photo-btn" class="hero-photo-btn" aria-label="kgh · cutie 프로필 카드 열기">
+                <img id="hero-photo-img" class="hero-photo-img" alt="kgh" />
+              </button>
+              <span class="hero-photo-tooltip" aria-hidden="true">kgh @ cutie</span>
+            </span>) 에게 보낼</span>
+          <span class="hero-line">진심과 정성을 담은 편지.</span>
+        </h1>
+        <p class="hero-sub">이 편지를 읽기 위해서는 비밀번호가 필요 합니다.</p>
+        <div class="hero-action">
+          <div class="gate-row-wrap">
+            <button type="button" id="hero-cta" class="cta">
+              편지읽기 <span class="cta-arrow" aria-hidden="true">→</span>
+            </button>
+            <form id="gate-form" class="gate" novalidate hidden>
+              <div class="gate-row">
+                <input type="password" id="password" name="password" autocomplete="current-password" aria-label="비밀번호"
+                  required />
+                <button type="submit">입력</button>
+              </div>
+            </form>
+          </div>
+          <p id="gate-error" class="error">비밀번호가 올바르지 않습니다.</p>
+        </div>
+      </div>
+      <div class="hero-slide" aria-hidden="true">
+        <div class="testimonial-rail">
+          <ul id="testimonial-track" class="testimonial-track"></ul>
+        </div>
+      </div>
+    </section>
+
+    <article id="letter" class="panel letter" hidden>
+      <div class="letter-header">
+        <button type="button" id="letter-back" class="letter-back">← 뒤로가기</button>
+        <div class="letter-font-controls" role="group" aria-label="글자 크기 조절">
+          <button type="button" id="letter-font-decrease" class="letter-font-btn" aria-label="글자 크기 줄이기">−</button>
+          <button type="button" id="letter-font-increase" class="letter-font-btn" aria-label="글자 크기 키우기">+</button>
+        </div>
+      </div>
+      <div id="letter-content" class="letter-content"></div>
+      <div class="letter-actions">
+        <button type="button" id="letter-copy" class="letter-icon-btn" aria-label="편지 복사하기">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </button>
+        <button type="button" id="letter-scroll-top" class="letter-icon-btn" aria-label="맨 위로 이동">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+          </svg>
+        </button>
+      </div>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="site-footer-inner">psh @ 2026</div>
+  </footer>
+
+  <div id="id-card-overlay" class="id-card-overlay" hidden>
+    <div class="id-card" role="dialog" aria-modal="true" aria-labelledby="id-card-name">
+      <button type="button" id="id-card-close" class="id-card-close" aria-label="닫기">✕</button>
+      <img id="id-card-img" class="id-card-img" alt="kgh" />
+      <p id="id-card-name" class="id-card-name">kgh <span class="id-card-role">@ cutie</span></p>
+    </div>
+  </div>
+
+  <div id="copy-toast-overlay" class="copy-toast-overlay" hidden>
+    <div class="copy-toast" role="status" aria-live="polite">
+      <p class="copy-toast-text">복사되었습니다</p>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
